@@ -52,3 +52,24 @@ status_bar.pack(fill=tk.X, side=tk.BOTTOM)
 
 def apply_theme():
     theme_name = "dark" if dark_mode else "light"
+    colors = THEMES[theme_name]
+
+    root.config(bg=colors["bg"])
+    main_frame.config(bg=colors["bg"])
+    toolbar.config(bg=colors["panel_bg"])
+
+    editor.config(bg=colors["editor_bg"], fg=colors["editor_fg"], insertbackground=colors["editor_fg"])
+    preview.config(bg=colors["editor_bg"], fg=colors["editor_fg"])
+    status_bar.config(bg=colors["status_bg"], fg=colors["status_fg"])
+
+def toggle_theme():
+    global dark_mode
+    dark_mode = not dark_mode
+    apply_theme()
+
+apply_theme()
+btn_theme = tk.Button(toolbar, text="Toggle Theme", command=toggle_theme, relief=tk.FLAT)
+btn_theme.pack(side=tk.LEFT, padx=5, pady=5)
+
+if __name__ == "__main__":
+    root.mainloop()
