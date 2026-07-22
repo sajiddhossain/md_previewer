@@ -1,5 +1,6 @@
 import tkinter as tk 
 from tkinter import ttk, filedialog, messagebox
+import re
 
 current_file = None
 dark_mode = True
@@ -43,7 +44,7 @@ editor.pack(fill=tk.BOTH, expand=True)
 paned.add(editor_frame, weight=1)
 
 preview_frame = tk.Frame(paned)
-preview = tk.Text(preview_frame, wrap=tk.WORD, font=("Sagoe UI", 11), state=tk.dis)
+preview = tk.Text(preview_frame, wrap=tk.WORD, font=("Sagoe UI", 11), state=tk.DISABLED)
 preview.pack(fill=tk.BOTH, expand=True)
 paned.add(preview_frame, weight=1)
 
@@ -71,5 +72,33 @@ apply_theme()
 btn_theme = tk.Button(toolbar, text="Toggle Theme", command=toggle_theme, relief=tk.FLAT)
 btn_theme.pack(side=tk.LEFT, padx=5, pady=5)
 
+def render_preview(event=None):
+    preview.config(state=tk.NORMAL)
+    preview.delete("1.0", tk.END)
+    
+    raw_text = editor.get("1.0", tk.END + "-1c")
+    lines = raw_text.split("\n")
+    
+    for line in lines:
+        if line.startswith("# "):
+            preview.insert(tk.END, line[2:] + "\n", "h1")
+        elif line.startswith("## "):
+            preview.insert(tk.END, line[3:] + "\n", "h2")
+        elif line.startswith("- "):
+            preview.insert(tk.END, "• " + line[2:] + "\n")
+        else:
+            if "**" in line:
+                parts = line.split("**")
+                for i, part in enumerate(parts):
+                    if i % 2 == 1:
+                        preview.insert(tk.END, part, "bold")
+                    else:
+                        preview.insert(tk.END, part)
+                preview.insert(tk.END, "\n")
+            else:
+                preview.insert(tk.END, line + "\n")
+
+    preview.config(state=tk.DISABLED)
+editor.bind("<KeyRelease>", render_preview)
 if __name__ == "__main__":
     root.mainloop()
