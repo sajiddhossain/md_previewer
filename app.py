@@ -123,5 +123,10 @@ btn_theme.pack(side=tk.LEFT, padx=5, pady=5)
 btn_save = tk.Button(toolbar, text="Save File", command=save_file, relief=tk.FLAT)
 btn_save.pack(side=tk.LEFT, padx=5, pady=5)
 editor.bind("<KeyRelease>", render_preview)
+
+root.lift()
+root.attributes("-topmost", True)
+root.after_idle(root.attributes, "-topmost", False)
+
 if __name__ == "__main__":
     root.mainloop()
