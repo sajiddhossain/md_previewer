@@ -2,9 +2,9 @@
 A custom Markdown previewer and editor built from scratch in Python and Tkinter
 
 ## Compatibility and Architecture
-- **OS:** 
-- **Architecture:** 
-- **Build Format:** 
+- **OS:** macOS
+- **Architecture:** Apple Silicon
+- **Build Format:** macOS Application Bundle
   
 ## Features
 - Dual panel layout (Editor + Preview)
