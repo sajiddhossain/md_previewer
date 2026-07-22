@@ -68,10 +68,6 @@ def toggle_theme():
     dark_mode = not dark_mode
     apply_theme()
 
-apply_theme()
-btn_theme = tk.Button(toolbar, text="Toggle Theme", command=toggle_theme, relief=tk.FLAT)
-btn_theme.pack(side=tk.LEFT, padx=5, pady=5)
-
 def render_preview(event=None):
     preview.config(state=tk.NORMAL)
     preview.delete("1.0", tk.END)
@@ -99,6 +95,30 @@ def render_preview(event=None):
                 preview.insert(tk.END, line + "\n")
 
     preview.config(state=tk.DISABLED)
+    update_stats()
+
+def update_stats():
+    content = editor.get("1.0", tk.END + "-1c")
+    lines = len(content.split("\n")) if content else 0
+    words = len(content.split())
+    chars = len(content)
+    status_bar.config(text=f" Lines: {lines} | Words: {words} | Caratteri: {chars}")
+
+def save_file():
+    global current_file
+    if not current_file:
+        current_file = filedialog.askopenfilename(defaultextension=".md", filetypes=[("Markdown Files", "*.md"), ("All Files", "*.*")])
+
+    if current_file:
+        with open(current_file, "w", encoding="utf-8") as f:
+            f.write(editor.get("1.0", tk.END + "-1c"))
+        messagebox.showinfo("Saved", "File saved successfully!")
+
+apply_theme()
+btn_theme = tk.Button(toolbar, text="Toggle Theme", command=toggle_theme, relief=tk.FLAT)
+btn_theme.pack(side=tk.LEFT, padx=5, pady=5)
+btn_save = tk.Button(toolbar, text="Save File", command=save_file, relief=tk.FLAT)
+btn_save.pack(side=tk.LEFT, padx=5, pady=5)
 editor.bind("<KeyRelease>", render_preview)
 if __name__ == "__main__":
     root.mainloop()
