@@ -47,6 +47,9 @@ preview_frame = tk.Frame(paned)
 preview = tk.Text(preview_frame, wrap=tk.WORD, font=("Sagoe UI", 11), state=tk.DISABLED)
 preview.pack(fill=tk.BOTH, expand=True)
 paned.add(preview_frame, weight=1)
+preview.tag_configure("h1", font=("Segoe UI", 16, "bold"))
+preview.tag_configure("h2", font=("Segoe UI", 13, "bold"))
+preview.tag_configure("bold", font=("Segoe UI", 11, "bold"))
 
 status_bar = tk.Label(main_frame, text=" Line: 1 | Words: 0 | Chars: 0", anchor=tk.W)
 status_bar.pack(fill=tk.X, side=tk.BOTTOM)
@@ -107,7 +110,7 @@ def update_stats():
 def save_file():
     global current_file
     if not current_file:
-        current_file = filedialog.askopenfilename(defaultextension=".md", filetypes=[("Markdown Files", "*.md"), ("All Files", "*.*")])
+        current_file = filedialog.asksaveasfilename(defaultextension=".md", filetypes=[("Markdown Files", "*.md"), ("All Files", "*.*")])
 
     if current_file:
         with open(current_file, "w", encoding="utf-8") as f:
